@@ -1,38 +1,56 @@
-import Axios from "axios"
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import Axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     email: '',
     password: ''
-  })
+  });
 
-  const handleOnSubmit = async () => {
-    event.preventDefault()
+  const handleOnSubmit = async (event) => {
+    event.preventDefault();
     try {
-      let { data } = await Axios.post("http://localhost:3000/login", form)
-      console.log(data, '<<<')
-      localStorage.setItem("access_token", data.access_token)
-
-
-      navigate('/')
-
+      const { data } = await Axios.post("http://localhost:3000/login", form);
+      console.log(data, '<<<');
+      localStorage.setItem("access_token", data.access_token);
+      navigate('/');
     } catch (error) {
-      console.log(error)
+      console.error(error);
     }
-  }
+  };
 
-  const handleOnChange = () => {
+  const handleOnChange = (event) => {
     setForm({
-        ...form,
-        [event.target.name] : event.target.value
-    })
-  }
+      ...form,
+      [event.target.name]: event.target.value
+    });
+  };
 
-  console.log(form)
+  const handleCredentialResponse = async (response) => {
+    try {
+      const google_token = response.credential;
+      const { data } = await Axios.post("http://localhost:3000/google-login", { google_token : google_token });
+      localStorage.setItem("access_token", data.access_token);
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    window.google.accounts.id.initialize({
+      client_id: "256687572511-dvba08opo0f52fb4im5ho9cce4v4gmub.apps.googleusercontent.com",
+      callback: handleCredentialResponse,
+    });
+
+    window.google.accounts.id.renderButton(
+      document.getElementById("buttonDiv"),
+      { theme: "outline", size: "large" }
+    );
+  }, []);
 
   return (
     <div className="h-screen flex justify-center mx-10 my-10">
@@ -42,7 +60,6 @@ function LoginForm() {
             <img src="https://res.cloudinary.com/de2dlumua/image/upload/v1702139297/mqwxprs8lczvsdayi2lh.png" alt="" />
           </figure>
         </div>
-
       </div>
       <div className="flex md:w-1/2 justify-center py-10 items-center bg-white">
         <form className="bg-white" onSubmit={handleOnSubmit}>
@@ -68,7 +85,7 @@ function LoginForm() {
               id="email"
               name="email"
               type="email"
-               value={form.email}
+              value={form.email}
               onChange={handleOnChange}
               placeholder="Email Address"
             />
@@ -105,10 +122,13 @@ function LoginForm() {
           <span className="text-sm ml-2 hover:text-blue-500 cursor-pointer">
             Forgot Password ?
           </span>
+          <div id="buttonDiv" type="button">
+            <p>jhahahaha</p>
+          </div>
         </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default LoginForm
+export default LoginForm;

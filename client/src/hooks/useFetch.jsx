@@ -21,9 +21,8 @@ function useFetch({url}) {
         fetchNews()
     },[])
 
-    console.log(data)
-
     return {data, loading}
 }
+
 
 export default useFetch

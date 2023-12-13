@@ -1,7 +1,11 @@
-
 const { comparePassword } = require('../helpers/bcrypt');
 const {User} = require('../models');
 const { signToken, verifyToken } = require('../helpers/jwt');
+
+const {OAuth2Client} = require('google-auth-library')
+const client = new OAuth2Client()
+
+
 
 class UserController {
     static async register(req, res) {
@@ -60,6 +64,41 @@ class UserController {
                 return res.status(400).json({message : error.errors[0].message})
             }
             res.status(500).json({message : "Internal server error"})
+        }
+    }
+
+    static async googleLogin(req, res) {
+        try {
+            const {google_token} = req.body
+
+            const ticket = await client.verifyIdToken({
+                idToken : google_token,
+                audience : "256687572511-dvba08opo0f52fb4im5ho9cce4v4gmub.apps.googleusercontent.com"
+            })
+
+            const payload = ticket.getPayload()
+
+            const [user, created] = await User.findOrCreate({
+                where : {email : payload.email},
+                defaults : {
+                    username : payload.name,
+                    email : payload.email,
+                    password: Math.random().toString(),
+                    role : "user"
+                }
+            })
+
+            const access_token = signToken({id : user.id})
+
+            res.status(created ? 201 : 200).json({
+                "message" : `User ${user.email} not found`,
+                "access_token" : access_token,
+                "user" : {
+                    "name" : user.name
+                }
+            })
+        } catch (error) {
+            console.log(error)
         }
     }
 }
