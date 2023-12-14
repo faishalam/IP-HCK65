@@ -1,8 +1,8 @@
 const { comparePassword } = require('../helpers/bcrypt');
-const {User} = require('../models');
+const {User, Order} = require('../models');
 const { signToken, verifyToken } = require('../helpers/jwt');
-
-const {OAuth2Client} = require('google-auth-library')
+const Axios = require('axios');
+const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client()
 
 
@@ -101,6 +101,88 @@ class UserController {
             console.log(error)
         }
     }
+
+   static async upgradeAccount(req, res, next) {
+    const userId = req.user.id
+    const orderId = req.body.orderId
+    try {
+        const user = await User.findByPk(userId)
+        if(!user) {
+            throw {name : "Unauthorized", message : "You are not authorized to upgrade"}
+        }
+        
+
+        if(user.role === 'admin') {
+            return res.json({success : false, message : "Already admin"})
+        }
+
+        const order = await Order.findOne({
+            where : {
+                orderId
+            }
+        })
+
+        
+
+        
+
+        if(!order) {
+            throw {name : 'Not Found', message : "No Transaction Found"}
+        }
+
+        // const token = Buffer.from("SB-Mid-server-PfxQnJUXtDA8RCzg8qKEtnK2").toString('base64')
+        // console.log(token, '<<<< token')
+
+        const url = `https://api.sandbox.midtrans.com/v2/${orderId}/status`
+        const options = {
+            method : 'GET',
+            headers : {
+                accept : 'application/json',
+                authorization : "Basic " + "U0ItTWlkLXNlcnZlci1QZnhRbkpVWHREQThSQ3pnOHFLRXRuSzI6"
+                // authorization : "Basic U0ItTWlkLXNlcnZlci1QZnhRbkpVWHREQThSQ3pnOHFLRXRuSzI6"
+            }
+        }
+
+        const { data } = await Axios.get(url, options)
+        console.log(data, '<< hacktivvvvv')
+        
+        if(data.transaction_status === 'capture' && +data.status_code === 200) {
+            await order.update({
+                status : 'paid',
+                paidDate : new Date()
+            })
+
+            await user.update({
+                role : 'admin'
+            })
+    
+            res.json({message : 'Upgrade account success'})
+        } else {
+            res.status(400).json({message : 'Transaction is not success'})
+        }
+    } catch (error) {
+        if(error.name === 'Unauthorized') {
+            res.status(401).json({message : error.message})
+        } else if(error.name === 'NotFound') {
+            res.status(404).json({message : error.message})
+        } else {
+            res.status(500).json({message : `Internal server error`})
+        }
+    }
+   }
+
+   static async fetchUser(req, res) {
+    try {
+        console.log(req.user)
+        const user = await User.findByPk(req.user.id, {
+            attributes : ['id', 'email', 'role']
+        })
+        console.log(user, 'ini dari server')
+        res.json(user)
+    } catch (error) {
+        console.log(error)
+    }
+   }
 }
 
 

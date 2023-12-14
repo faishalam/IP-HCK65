@@ -3,16 +3,22 @@ const {User} = require("../models");
 
 async function authentication(req, res, next) {
     try {
-        let token = req.headers.authorization
+        let access_token = req.headers.authorization
+        console.log(access_token)
+
         
-        if(!token) throw {name : `InvalidToken`}
-        if(token.slice(0, 7) !== 'Bearer ') throw {name: `InvalidToken`}
+        if(access_token == 'undefined') {
+            throw {message : "invalid token"}
+        }
+        if(access_token.slice(0, 7) !== 'Bearer ') throw {message: `InvalidToken`}
         
-        token = token.slice(7)
-        let payload = verifyToken(token)
+        
+        // access_token = access_token.slice(7)
+        
+        let payload = verifyToken(access_token)
         
         let user = await User.findByPk(payload.id)
-        if(!user) throw {name: `InvalidToken`}
+        if(!user) throw {message: `InvalidToken`}
 
         req.user = {
             id : user.id,
