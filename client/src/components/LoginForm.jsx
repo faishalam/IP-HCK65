@@ -123,7 +123,7 @@ function LoginForm() {
             Forgot Password ?
           </span>
           <div id="buttonDiv" type="button">
-            <p>jhahahaha</p>
+            
           </div>
         </form>
       </div>

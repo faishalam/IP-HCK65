@@ -2,7 +2,7 @@ const express = require('express')
 const ArticleController = require('../controllers/articleController')
 const authentication = require('../middleware/authenctication')
 const authorization = require('../middleware/authorization')
-const articleRouter = express()
+const articleRouter = express.Router()
 
 articleRouter.use(authentication)
 articleRouter.get("/", ArticleController.fetchArticle)

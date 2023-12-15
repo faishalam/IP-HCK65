@@ -10,7 +10,7 @@ async function authorization(req, res, next) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        console.log(user.role)
+        // console.log(user.role) 
 
         
         if (user.role === 'admin') {
@@ -18,19 +18,7 @@ async function authorization(req, res, next) {
         } else {
             throw {message : 'You are not have permission!'}
         }
-
-        
-        // const article = await Article.findByPk(req.params.id);
-        // if (!article) {
-        //     return res.status(404).json({ error: 'Lodging not found' });
-        // }
-
-        
-        // if (user.id === article.authorId) {
-        //     return next();
-        // } else {
-        //     return res.status(403).json({ error: 'Forbidden' });
-        // }
+    
     } catch (error) {
         console.log(error)
     }

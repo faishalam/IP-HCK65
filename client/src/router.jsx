@@ -29,6 +29,11 @@ const router = createBrowserRouter([
         element: <MyArticlesPage/>,
         loader : () => !localStorage.getItem("access_token") && redirect('/login')
     },
+    {
+        path: "/myarticles/:id",
+        element: <MyArticlesPage/>,
+        loader : () => !localStorage.getItem("access_token") && redirect('/login')
+    },
 ]);
 
 export default router

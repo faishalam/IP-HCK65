@@ -6,7 +6,7 @@ const apiKey = '5f2ad5bea3e344529f6e22dfa0bc7638';
 class ArticleController {
   static async fetchArticle(req, res) {
     const params = {
-      q: 'bitcoin',
+      q: 'politics',
       apiKey: apiKey
     };
 
@@ -14,9 +14,8 @@ class ArticleController {
       const response = await Axios.get(apiUrl, {
         params: params
       });
-      const data = response.data;
-
-      console.log(data, '<<<')
+      const data = response.data
+      // console.log(data, '<<<</////w,')
 
       res.status(200).json(data)
     } catch (error) {
@@ -57,9 +56,9 @@ class ArticleController {
   static async deleteArticle(req, res) {
     try {
       const { id } = req.params
-      console.log(id, 'id articles')
+      
       const authorId = req.user.id
-      console.log(authorId, 'userId')
+      
 
       let data = await Article.findByPk(id)
       if (!data) throw { name: "notFound" }

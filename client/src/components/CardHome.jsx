@@ -1,7 +1,88 @@
+import { useEffect, useState } from "react";
 import useFetch from "../hooks/useFetch";
+import Axios from "axios"
 
 function CardHome() {
-    const { data: news, loading } = useFetch({ url: "http://localhost:3000" })
+    // const [news, setNews] = useState([])
+    // let [loading, setLoading] = useState(true)
+    // const [articles, setArticles] = useState([])
+
+    // const fetchArticles = async() => {
+    //     setLoading(true)
+    //     try {
+    //         const response = await Axios.get("http://localhost:3000", {
+    //             headers : {
+    //                 Authorization : `Bearer ${localStorage.getItem("access_token")}`
+    //             }
+    //         })
+
+    //         setNews(response.data.articles)
+
+    //         console.log(response, '<<<<<')
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    //     setLoading(false)
+    // }
+
+    // useEffect(() => {
+    //     fetchArticles()
+    // }, [])
+
+    // const fetchArticlesDatabase = async () => {
+    //     try {
+    //         const response = await Axios.get("http://localhost:3000/myarticles", {
+    //             headers: {
+    //                 Authorization: `Bearer ${localStorage.getItem("access_token")}`
+    //             }
+    //         })
+
+    //         setArticles(response.data)
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+    // useEffect(() => {
+    //     fetchArticlesDatabase()
+
+    // }, [])
+    const [news, setNews] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [articles, setArticles] = useState([]);
+    const [loadingArticles, setLoadingArticles] = useState(true);
+  
+    const fetchArticles = async () => {
+        setLoading(true);
+        try {
+            const response = await Axios.get("http://localhost:3000", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                },
+            });
+    
+            const responseDatabase = await Axios.get("http://localhost:3000/myarticles", {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                },
+            });
+    
+            // Menggabungkan data dari kedua sumber
+            const combinedData = [...response.data.articles, ...responseDatabase.data];
+    
+            setNews(combinedData);
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+    
+    useEffect(() => {
+        fetchArticles();
+    }, []);
+    console.log(news, 'dapet')
+  
 
     return (
         <>
@@ -19,7 +100,7 @@ function CardHome() {
                         <div className="flex items-center justify-center h-64"> {/* Menyusun loading di tengah */}
                             <span className="loading loading-bars loading-lg"></span>
                         </div>
-                    ) : (
+                    ) : ( 
                         <div className="gap-6 flex flex-wrap justify-center items-center">
                             {news.map((item, index) => (
                                 <div key={index + 1} className="mb-1 flex flex-wrap border-b border-gray-300 mx-[120px]">

@@ -11,7 +11,7 @@ class UserController {
     static async register(req, res) {
         try {
             const {username, email, password, role} = req.body
-            console.log(req.body)
+            // console.log(req.body)
 
             let newUser = await User.create({username, email, password, role})
             const withoutPassword = {
@@ -122,10 +122,6 @@ class UserController {
             }
         })
 
-        
-
-        
-
         if(!order) {
             throw {name : 'Not Found', message : "No Transaction Found"}
         }
@@ -144,7 +140,7 @@ class UserController {
         }
 
         const { data } = await Axios.get(url, options)
-        console.log(data, '<< hacktivvvvv')
+        // console.log(data, '<< hacktivvvvv')
         
         if(data.transaction_status === 'capture' && +data.status_code === 200) {
             await order.update({
@@ -173,11 +169,11 @@ class UserController {
 
    static async fetchUser(req, res) {
     try {
-        console.log(req.user)
+        // console.log(req.user)
         const user = await User.findByPk(req.user.id, {
             attributes : ['id', 'email', 'role']
         })
-        console.log(user, 'ini dari server')
+        // console.log(user, 'ini dari server')
         res.json(user)
     } catch (error) {
         console.log(error)
