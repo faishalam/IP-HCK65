@@ -23,7 +23,10 @@ function CategoryCardHome() {
 
     return (
         <>
-        <div className="flex justify-around gap-20 items-center mt-6 px-[150px]">
+         <div className="flex justify-between items-center mt-[100px] gap-6" style={{ marginLeft: 180, marginRight: 180 }}>
+         <h2 className="mb-2 text-3xl font-bold ml-20">Category</h2>
+            </div>
+        <div className="flex justify-around items-center mt-6 px-[200px]">
         {categories.map((item, index) => (
           <Link to={`http://localhost:3000/?q=${item.name}`} key={index}>
             

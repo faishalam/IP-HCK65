@@ -53,7 +53,7 @@ const Hero = () => {
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
         <div className='relative'>
             <Slider {...settings} ref={slickSlider}>
                 {slides.map((slide, index) => (

@@ -1,66 +1,79 @@
-import { useEffect, useState } from "react"
-import Axios from "axios"
-import { useNavigate, useParams } from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import Axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 function ModalEdit() {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
+    const { id } = useParams();
 
-    const {id} = useParams()
+    const [articles, setArticles] = useState({
+        title: "",
+        description: "",
+        url: "",
+        urlToImage: "",
+        content: "",
+    });
+
     
-    const [articles, setArticles] = useState({ 
-        title : '',
-        description : '',
-        url : '',
-        urlToImage : '',
-        content : ''
-    })
 
-    const [myArticles, setMyArticles] = useState([])
+    const [myArticles, setMyArticles] = useState([]);
 
-    const fetchArticles = async() => {
+    const fetchArticles = async () => {
         try {
             const response = await Axios.get(`http://localhost:3000/myarticles/${id}`, {
-                headers : {
-                    Authorization : `Bearer ${localStorage.getItem("access_token")}`
-                }
-            })
-            
-            setMyArticles(response.data)
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                },
+            });
+
+            setMyArticles(response.data);
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 
     useEffect(() => {
-        fetchArticles()
-        
-    }, [])
+        fetchArticles();
+    }, []);
 
-    const handleOnAdd = async() => {
-        event.preventDefault()
+    
+
+    const handleOnAdd = async (event) => {
+        event.preventDefault();
         try {
-            const {data} = await Axios.put(`http://localhost:3000/articles/${id}`, articles, {
-                headers : {
-                    Authorization : `Bearer ${localStorage.getItem("access_token")}`
+            const { data } = await Axios.put( `http://localhost:3000/articles/${id}`, articles, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+                    },
                 }
-            } )
+            );
+            setMyArticles(data);
 
-            setArticles(data)
+            toast.success('Add Articles Success!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
 
-            navigate('/myarticles')
+            navigate('/myarticles');
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
-    }
+    };
 
-    const handleOnChange = () => {
+    const handleOnChange = (event) => {
         setArticles({
             ...articles,
-            [event.target.name] : event.target.value
-        })
+            [event.target.name]: event.target.value,
+        });
     }
-
-    console.log(articles)
     
     
     return (

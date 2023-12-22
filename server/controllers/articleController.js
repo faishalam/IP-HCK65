@@ -6,7 +6,7 @@ const apiKey = '5f2ad5bea3e344529f6e22dfa0bc7638';
 class ArticleController {
   static async fetchArticle(req, res) {
     const params = {
-      q: 'politics',
+      q: 'bitcoin',
       apiKey: apiKey
     };
 
@@ -15,7 +15,6 @@ class ArticleController {
         params: params
       });
       const data = response.data
-      // console.log(data, '<<<</////w,')
 
       res.status(200).json(data)
     } catch (error) {
@@ -26,6 +25,7 @@ class ArticleController {
   static async createArticle(req, res) {
     try {
       const { title, description, url, urlToImage, content } = req.body
+      console.log(req.user.username)
 
       const newArticle = await Article.create({ author: req.user.username, title, description, url, urlToImage, content, authorId: req.user.id })
 
@@ -61,7 +61,7 @@ class ArticleController {
       
 
       let data = await Article.findByPk(id)
-      if (!data) throw { name: "notFound" }
+      if (!data) throw { name: "Data not found" }
 
       if (data.authorId !== authorId) return res.status(401).json({ message: "You are not have permission" })
 
@@ -80,7 +80,7 @@ class ArticleController {
       const { title, description, url, urlToImage, content } = req.body
 
       let data = await Article.findByPk(id)
-      if (!data) throw { name: "notFound" }
+      if (!data) throw { name: "Data not found" }
 
       if (data.authorId !== authorId) return res.status(401).json({ message: "You are not have permission" })
 

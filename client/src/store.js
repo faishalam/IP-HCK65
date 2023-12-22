@@ -1,5 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore } from "@reduxjs/toolkit";
+import articlesReducer from "./features/articles/articlesSlice";
 
-export default configureStore({
-  reducer: {}
+export const store = configureStore({
+    reducer : {
+        articles : articlesReducer,
+        myarticles : articlesReducer,
+        myarticlesById : articlesReducer,
+    },
 })

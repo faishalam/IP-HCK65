@@ -57,8 +57,9 @@ class UserController {
             }
     
             let access_token = signToken({id : user.id, role: user.role})
+            console.log()
 
-            res.status(200).json({access_token})
+            res.status(200).json({access_token : access_token})
         } catch (error) {
             if(error.name === "SequelizeValidationError") {
                 return res.status(400).json({message : error.errors[0].message})
@@ -88,7 +89,8 @@ class UserController {
                 }
             })
 
-            const access_token = signToken({id : user.id})
+            const access_token = signToken({id : user.id, role: user.role,
+                username : user.username})
 
             res.status(created ? 201 : 200).json({
                 "message" : `User ${user.email} not found`,
@@ -135,12 +137,11 @@ class UserController {
             headers : {
                 accept : 'application/json',
                 authorization : "Basic " + "U0ItTWlkLXNlcnZlci1QZnhRbkpVWHREQThSQ3pnOHFLRXRuSzI6"
-                // authorization : "Basic U0ItTWlkLXNlcnZlci1QZnhRbkpVWHREQThSQ3pnOHFLRXRuSzI6"
             }
         }
 
         const { data } = await Axios.get(url, options)
-        // console.log(data, '<< hacktivvvvv')
+        console.log(data, '<< hacktivvvvv')
         
         if(data.transaction_status === 'capture' && +data.status_code === 200) {
             await order.update({
@@ -169,7 +170,7 @@ class UserController {
 
    static async fetchUser(req, res) {
     try {
-        // console.log(req.user)
+        
         const user = await User.findByPk(req.user.id, {
             attributes : ['id', 'email', 'role']
         })

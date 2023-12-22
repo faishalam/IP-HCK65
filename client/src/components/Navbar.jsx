@@ -21,7 +21,6 @@ function Navbar() {
                 Authorization: `Bearer ${localStorage.getItem("access_token")}`
             }
         })
-        // console.log(data, 'ini yaaa')
         setUser(data)
     }
 
@@ -45,7 +44,6 @@ function Navbar() {
                 Authorization: `Bearer ${localStorage.getItem("access_token")}`
             }
         })
-
         window.snap.pay(data.token, {
             onSuccess: async function () {
                 const requestBody = {
@@ -64,7 +62,7 @@ function Navbar() {
         })
     }
 
-    console.log(user)
+    console.log(user, '<<<')
 
     const isUser = user.role === 'user'
     const isAdmin = user.role === 'admin'

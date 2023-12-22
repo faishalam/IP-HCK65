@@ -95,10 +95,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate : {
         notNull : {
-          msg : 'is required'
+          msg : 'authorId is required'
         },
         notEmpty : {
-          msg : 'is required'
+          msg : 'authorId is required'
         }
       }
     },

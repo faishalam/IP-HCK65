@@ -2,9 +2,16 @@ import { useEffect, useState } from "react"
 import Axios from "axios"
 import { useNavigate } from "react-router-dom"
 import { MdDeleteForever } from "react-icons/md";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMyArticles } from "../features/articles/asycnAction";
 
 
 function ModalAdd() {
+    const dispatch = useDispatch()
+    const myarticles = useSelector((state) => state.myarticles.myarticles)
+
+
     const navigate = useNavigate()
     const [articles, setArticles] = useState({ 
         title : '',
@@ -25,7 +32,22 @@ function ModalAdd() {
 
             setArticles(data)
 
+            document.getElementById('my_modal_1').close();
+
+            dispatch(fetchMyArticles())
+
             navigate('/myarticles')
+
+            toast.success('Add Articles Success!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                });
         } catch (error) {
             console.log(error)
         }
