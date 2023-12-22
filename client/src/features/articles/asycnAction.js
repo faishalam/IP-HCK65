@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 export const fetchArticles = () => {
     return async(dispatch) => {
         try {            
-            const response = await Axios.get("http://localhost:3000", {
+            const response = await Axios.get("http://34.87.125.58", {
                 headers : {
                     Authorization : `Bearer ${localStorage.getItem("access_token")}`
                 }
@@ -24,7 +24,7 @@ export const fetchMyArticles = () => {
     return async(dispatch) => {
         try {        
                 
-            const response = await Axios.get("http://localhost:3000/myarticles", {
+            const response = await Axios.get("http://34.87.125.58/myarticles", {
                 headers : {
                     Authorization : `Bearer ${localStorage.getItem("access_token")}`
                 }
@@ -43,7 +43,7 @@ export const handleOnDelete = (id) => {
     console.log(id, 'haha')
     return async (dispatch) => {
         try {
-            const {data} = await Axios.delete(`http://localhost:3000/articles/${id}`, {
+            const {data} = await Axios.delete(`http://34.87.125.58/articles/${id}`, {
                 headers : {
                     Authorization : `Bearer ${localStorage.getItem("access_token")}`
                 }
@@ -72,7 +72,7 @@ export const fetchArticleById = (id) => {
     
     return async (dispatch) => {
         try {
-            const response = await Axios.get(`http://localhost:3000/myarticles/${id}`, {
+            const response = await Axios.get(`http://34.87.125.58//myarticles/${id}`, {
                 headers : {
                     Authorization : `Bearer ${localStorage.getItem("access_token")}`
                 }

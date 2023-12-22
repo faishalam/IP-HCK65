@@ -16,8 +16,8 @@ function RegisterForm() {
   const handleOnSubmit = async (event) => {
     event.preventDefault()
     try {
-      const { data } = await Axios.post("http://localhost:3000/register", user)
-      
+      console.log('ah')
+      const { data } = await Axios.post("http://34.87.125.58/register", user)
       navigate('/login')
 
       toast.success('Register success!', {

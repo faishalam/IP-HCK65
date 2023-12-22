@@ -22,7 +22,7 @@ function ModalEdit() {
 
     const fetchArticles = async () => {
         try {
-            const response = await Axios.get(`http://localhost:3000/myarticles/${id}`, {
+            const response = await Axios.get(`http://34.87.125.58/myarticles/${id}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("access_token")}`,
                 },
@@ -43,7 +43,7 @@ function ModalEdit() {
     const handleOnAdd = async (event) => {
         event.preventDefault();
         try {
-            const { data } = await Axios.put( `http://localhost:3000/articles/${id}`, articles, {
+            const { data } = await Axios.put( `http://34.87.125.58/articles/${id}`, articles, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
                     },

@@ -16,7 +16,7 @@ function Navbar() {
     }
 
     const fetchUser = async () => {
-        const { data } = await Axios.get("http://localhost:3000/users/me", {
+        const { data } = await Axios.get("http://34.87.125.58/users/me", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("access_token")}`
             }
@@ -39,7 +39,7 @@ function Navbar() {
     })
 
     const handleOnUpgrade = async () => {
-        const { data } = await Axios.get("http://localhost:3000/payment/midtrans/initiate", {
+        const { data } = await Axios.get("http://34.87.125.58/payment/midtrans/initiate", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("access_token")}`
             }
@@ -50,7 +50,7 @@ function Navbar() {
                     orderId: data.orderId
                 }
                 await Axios.patch(
-                    "http://localhost:3000/users/me/upgrade",
+                    "http://34.87.125.58/users/me/upgrade",
                     requestBody,
                     {
                         headers: {

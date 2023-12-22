@@ -30,7 +30,7 @@ function LoginForm() {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
     } catch (error) {
       console.error(error);
       toast.error('Invalid email/password', {
@@ -42,7 +42,7 @@ function LoginForm() {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
     }
   };
 
@@ -70,7 +70,7 @@ function LoginForm() {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
     } catch (error) {
       console.error(error);
     }
@@ -151,6 +151,7 @@ function LoginForm() {
               >
                 Submit
               </button>
+
               <div className="flex items-center text-sm text-white-950">
                 <p>New here?</p>
                 <Link to={"/register"}>
@@ -158,8 +159,13 @@ function LoginForm() {
                     Register
                   </p>
                 </Link>
+                
               </div>
+              
             </div>
+            <div>
+                  <div id="buttonDiv"></div>
+                </div>
           </form>
         </div>
       </div>
