@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import { heroService } from "../services/hero"
+import { fetchMyArticles } from "../features/articles/asycnAction";
+import { useDispatch } from "react-redux";
 
 function ModalEdit() {
+    const dispatch = useDispatch()
     const navigate = useNavigate();
     const { id } = useParams();
 
@@ -22,7 +24,7 @@ function ModalEdit() {
 
     const fetchArticles = async () => {
         try {
-            const response = await Axios.get(`http://34.87.125.58/myarticles/${id}`, {
+            const response = await heroService.get(`/myarticles/${id}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("access_token")}`,
                 },
@@ -43,7 +45,7 @@ function ModalEdit() {
     const handleOnAdd = async (event) => {
         event.preventDefault();
         try {
-            const { data } = await Axios.put( `http://34.87.125.58/articles/${id}`, articles, {
+            const { data } = await heroService.put(`/articles/${id}`, articles, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("access_token")}`,
                     },
@@ -51,7 +53,9 @@ function ModalEdit() {
             );
             setMyArticles(data);
 
-            toast.success('Add Articles Success!', {
+            document.getElementById('modal_edit').close();
+
+            toast.success('Edit Articles Success!', {
                 position: "top-center",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -61,6 +65,8 @@ function ModalEdit() {
                 progress: undefined,
                 theme: "light",
                 });
+
+            dispatch(fetchMyArticles())
 
             navigate('/myarticles');
         } catch (error) {

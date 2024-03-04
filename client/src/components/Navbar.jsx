@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom"
-import Axios from 'axios'
 import { useEffect, useMemo, useState } from "react"
+import { heroService } from "../services/hero"
 
 function Navbar() {
     const navigate = useNavigate()
@@ -16,7 +16,7 @@ function Navbar() {
     }
 
     const fetchUser = async () => {
-        const { data } = await Axios.get("http://34.87.125.58/users/me", {
+        const { data } = await heroService.get("/users/me", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("access_token")}`
             }
@@ -39,7 +39,7 @@ function Navbar() {
     })
 
     const handleOnUpgrade = async () => {
-        const { data } = await Axios.get("http://34.87.125.58/payment/midtrans/initiate", {
+        const { data } = await heroService.get("/payment/midtrans/initiate", {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem("access_token")}`
             }
@@ -49,8 +49,8 @@ function Navbar() {
                 const requestBody = {
                     orderId: data.orderId
                 }
-                await Axios.patch(
-                    "http://34.87.125.58/users/me/upgrade",
+                await heroService.patch(
+                    "/users/me/upgrade",
                     requestBody,
                     {
                         headers: {
@@ -61,9 +61,6 @@ function Navbar() {
             }
         })
     }
-
-    console.log(user, '<<<')
-
     const isUser = user.role === 'user'
     const isAdmin = user.role === 'admin'
 

@@ -8,7 +8,7 @@ const userRouter = express.Router()
 userRouter.post("/register", UserController.register)
 userRouter.post("/login", UserController.login)
 userRouter.post("/google-login", UserController.googleLogin)
-userRouter.use(authentication)
+userRouter.use(authentication) 
 userRouter.get("/users/me", UserController.fetchUser)
 userRouter.patch("/users/me/upgrade", UserController.upgradeAccount)
 

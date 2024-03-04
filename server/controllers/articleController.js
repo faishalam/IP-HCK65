@@ -5,10 +5,16 @@ const apiKey = '5f2ad5bea3e344529f6e22dfa0bc7638';
 
 class ArticleController {
   static async fetchArticle(req, res) {
+    const {search, q} = req.query;
+
     const params = {
       q: 'bitcoin',
       apiKey: apiKey
     };
+
+    if(q) {
+      params.q = q
+    }
 
     try {
       const response = await Axios.get(apiUrl, {

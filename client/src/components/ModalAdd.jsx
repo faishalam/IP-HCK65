@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react"
-import Axios from "axios"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import { MdDeleteForever } from "react-icons/md";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchMyArticles } from "../features/articles/asycnAction";
-
+import { heroService } from "../services/hero";
 
 function ModalAdd() {
     const dispatch = useDispatch()
@@ -24,7 +22,7 @@ function ModalAdd() {
     const handleOnAdd = async() => {
         event.preventDefault()
         try {
-            const {data} = await Axios.post("http://34.87.125.58/articles", articles, {
+            const {data} = await heroService.post("/articles", articles, {
                 headers : {
                     Authorization : `Bearer ${localStorage.getItem("access_token")}`
                 }
@@ -58,10 +56,7 @@ function ModalAdd() {
             ...articles,
             [event.target.name] : event.target.value
         })
-    }
-
-    console.log(articles)
-    
+    }    
 
     return (
         <>

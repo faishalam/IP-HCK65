@@ -10,9 +10,9 @@ async function authorization(req, res, next) {
             return res.status(404).json({ error: 'User not found' });
         }
 
-        // console.log(user.role) 
+        console.log(user)
 
-        
+
         if (user.role === 'admin') {
             return next();
         } else {

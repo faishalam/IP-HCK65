@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Navbar from './Navbar';
 
 
 const slides = [
@@ -41,7 +40,8 @@ const Hero = () => {
     }, []);
 
     const settings = {
-        dots: true,
+        dots: false,
+        arrows: false,
         infinite: true,
         speed: 2000,
         slidesToShow: 1,
@@ -53,7 +53,6 @@ const Hero = () => {
 
     return (
         <>
-            <Navbar />
         <div className='relative'>
             <Slider {...settings} ref={slickSlider}>
                 {slides.map((slide, index) => (

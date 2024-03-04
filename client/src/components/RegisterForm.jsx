@@ -1,7 +1,7 @@
-import Axios from "axios"
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import { toast } from "react-toastify";
+import { heroService } from "../services/hero";
 
 
 function RegisterForm() {
@@ -16,8 +16,7 @@ function RegisterForm() {
   const handleOnSubmit = async (event) => {
     event.preventDefault()
     try {
-      console.log('ah')
-      const { data } = await Axios.post("http://34.87.125.58/register", user)
+      const { data } = await heroService.post("/register", user)
       navigate('/login')
 
       toast.success('Register success!', {

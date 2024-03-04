@@ -1,7 +1,7 @@
-import Axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { heroService } from "../services/hero";
 
 
 function LoginForm() {
@@ -15,8 +15,7 @@ function LoginForm() {
   const handleOnSubmit = async (event) => {
     event.preventDefault();
     try {
-      const { data } = await Axios.post("http://localhost:3000/login", form);
-      console.log(data, '<<<');
+      const { data } = await heroService.post("/login", form);
       localStorage.setItem("access_token", data.access_token);
 
       navigate('/');
@@ -56,7 +55,7 @@ function LoginForm() {
   const handleCredentialResponse = async (response) => {
     try {
       const google_token = response.credential;
-      const { data } = await Axios.post("http://localhost:3000/google-login", { google_token: google_token });
+      const { data } = await heroService.post("/google-login", { google_token: google_token });
       localStorage.setItem("access_token", data.access_token);
 
       navigate('/');
@@ -100,7 +99,7 @@ function LoginForm() {
     >
       <div className="absolute inset-0 bg-black opacity-50"></div>
 
-      <div className="flex justify-center items-center h-screen overflow-hidden">
+      <div className="flex justify-center items-center h-screen">
         <div className="w-96 backdrop-blur-lg bg-opacity-80 rounded-lg shadow-lg p-5 bg-grey-600 text-white">
           <h2 className="text-2xl font-bold pb-5 text-white-950">
             {" "}

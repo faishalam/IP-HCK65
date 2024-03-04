@@ -1,7 +1,6 @@
 const { comparePassword } = require('../helpers/bcrypt');
 const {User, Order} = require('../models');
 const { signToken, verifyToken } = require('../helpers/jwt');
-const Axios = require('axios');
 const {OAuth2Client} = require('google-auth-library');
 const client = new OAuth2Client()
 
@@ -57,7 +56,7 @@ class UserController {
             }
     
             let access_token = signToken({id : user.id, role: user.role})
-            console.log()
+            
 
             res.status(200).json({access_token : access_token})
         } catch (error) {
@@ -107,6 +106,7 @@ class UserController {
    static async upgradeAccount(req, res, next) {
     const userId = req.user.id
     const orderId = req.body.orderId
+    console.log(userId, 'masuk')
     try {
         const user = await User.findByPk(userId)
         if(!user) {
@@ -170,7 +170,6 @@ class UserController {
 
    static async fetchUser(req, res) {
     try {
-        
         const user = await User.findByPk(req.user.id, {
             attributes : ['id', 'email', 'role']
         })
